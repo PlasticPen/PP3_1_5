@@ -25,8 +25,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        this.successUserHandler = successUserHandler;
 //    }
 
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    UserService userService;
+    public WebSecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
 
 //    @Bean
 //    public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -35,14 +43,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+//        auth.userDetailsService(userService);
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 
     }
 
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
-    }
+//    @Bean
+//    public PasswordEncoder getPasswordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();
+////        return new BCryptPasswordEncoder();
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
