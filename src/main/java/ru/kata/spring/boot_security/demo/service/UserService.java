@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -27,23 +25,19 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
 
     //    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("BEFORE!!!");
         User user = userRepository.findByUsername(username);
-
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -59,12 +53,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    @Transactional
     public boolean saveUser(User user) {
-
-//        if (isThereAnyRoles()) {
-//            System.out.println("SAVEROLESCHECK!!!!!");
-//            em.createNativeQuery("INSERT INTO t_role(id, name) where VALUES (1, 'ROLE_USER'), (2, 'ROLE_ADMIN') ");
-//        }
 
         User userFromDB = userRepository.findByUsername(user.getUsername());
 
@@ -72,22 +62,26 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRoles(new HashSet<>());
-        System.out.println("BEFORE!!!!!!!!!!!!!!");
+        if (user.getRoles() == null){
+            user.setRoles(new HashSet<>());
+        }
         user.getRoles().add(new Role(1L, "ROLE_USER"));
-        System.out.println("AFTER!!!!!!!!!!!!!!!");
-        //user.getRoles().add(new Role(2L, "ROLE_ADMIN"));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         userRepository.save(user);
-        System.out.println("SAVE!!!!!!!!!!!!!!!");
         return true;
     }
 
+    @Transactional
     public boolean isThereAnyRoles() {
-        System.out.println("CHECK ROLES!!!!!");
         List<Role> roles = em.createNativeQuery("SELECT * FROM t_role").getResultList();
         return (roles.isEmpty());
+    }
+
+    @Transactional
+    public void createRoles() {
+        if (isThereAnyRoles()) {
+            em.createNativeQuery("INSERT INTO t_role (id, name) VALUES (1, 'ROLE_USER'), (2, 'ROLE_ADMIN') ").executeUpdate();
+        }
     }
 
     public boolean deleteUser(Long userId) {
@@ -105,5 +99,18 @@ public class UserService implements UserDetailsService {
         updatedUser.setUsername(oldUser.getUsername());
         updatedUser.setPassword(oldUser.getPassword());
         userRepository.save(updatedUser);
+    }
+
+    @Transactional
+    public void createAdminUser() {
+        createRoles();
+        User admin = new User();
+        admin.setUsername("admin");
+        admin.setName("admin");
+        admin.setSurname("admin");
+        admin.setPassword("admin");
+        admin.setRoles(new HashSet<>());
+        admin.getRoles().add(new Role(2L, "ROLE_ADMIN"));
+        saveUser(admin);
     }
 }

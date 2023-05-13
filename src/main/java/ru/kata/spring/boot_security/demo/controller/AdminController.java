@@ -11,7 +11,6 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
     private UserService userService;
 
     @Autowired
@@ -28,7 +27,6 @@ public class AdminController {
     @GetMapping
     public String showAllUsers(Model model) {
         model.addAttribute("users", userService.allUsers());
-
         return "showAllUsers";
     }
 

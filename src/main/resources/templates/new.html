@@ -20,13 +20,13 @@
     <label for="surname">Enter surname:</label>
     <input type="text" th:charset="utf-8"  th:field="*{surname}" id="surname"/>
     <br/>
-    <label for="email">Enter email:</label>
-    <input type="text" th:charset="utf-8" th:field="*{email}" id="email"/>
-    <br/>
     <input type="submit" value="Create new user"/>
 
 </form>
-<a href="/logout">Logout</a>
+<br/>
+<form th:action="@{/logout}">
+    <input type="submit" value="LOGOUT"/>
+</form>
 
 
 </body>

@@ -9,16 +9,16 @@
 My HomePage:
 <br/>
 <hr/>
-
+<br/>
+<b>Username:</b>
+<p th:text="${user.getUsername()}"></p>
+<b>Name:</b>
 <p th:text="${user.getName()}"></p>
+<b>Surname:</b>
 <p th:text="${user.getSurname()}"></p>
-<!--<p th:text="${user.getEmail()}"></p>-->
-
-<!--<a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a>-->
-
-<!--<form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">-->
-<!--    <input type="submit" value="DELETE"/>-->
-<!--</form>-->
-<a href="/logout">Logout</a>
+<br/>
+<form th:action="@{/logout}">
+    <input type="submit" value="LOGOUT"/>
+</form>
 </body>
 </html>
