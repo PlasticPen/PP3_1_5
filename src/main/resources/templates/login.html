@@ -6,9 +6,7 @@
 <body>
 <h1>Login page</h1>
 <p style="color:red" th:if="${loginError}" class="error">Wrong user or password</p>
-<div style="color:red" th:if="${loginError}">
-    <div class="alert alert-danger">Invalid Email or Password</div>
-</div>
+
 <form th:action="@{/process_login}" method="post">
     <label for="username">Username</label>:
     <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
@@ -16,5 +14,14 @@
     <input type="password" id="password" name="password" /> <br />
     <input type="submit" value="Log in" />
 </form>
+<br/>
+New Here?
+<!--<a href="admin/new">Register</a>-->
+
+<form th:action="@{/registration}" method="GET">
+    <input type="submit" value="Register" />
+</form>
+
+<br/>
 </body>
 </html>

@@ -19,14 +19,12 @@ public class RegistrationController {
 
     @GetMapping("/login")
     public String login() {
-        System.out.println("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
         return "login";
     }
 
     // Login form with error
     @RequestMapping("/login-error")
     public String loginError(Model model) {
-        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         model.addAttribute("loginError", true);
         return "login";
     }
@@ -34,7 +32,6 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration(@ModelAttribute("user") User user) {
-//        model.addAttribute("user", new User());
         return "registration";
     }
 

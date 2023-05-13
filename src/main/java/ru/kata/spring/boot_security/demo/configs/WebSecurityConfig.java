@@ -19,8 +19,8 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//    private final SuccessUserHandler successUserHandler;
-//
+    private final SuccessUserHandler successUserHandler;
+
 //    public WebSecurityConfig(SuccessUserHandler successUserHandler) {
 //        this.successUserHandler = successUserHandler;
 //    }
@@ -29,30 +29,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public WebSecurityConfig(UserService userService, PasswordEncoder passwordEncoder) {
+    public WebSecurityConfig(UserService userService, PasswordEncoder passwordEncoder, SuccessUserHandler successUserHandler) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.successUserHandler = successUserHandler;
     }
 
 
 
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userService);
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
 
     }
 
-//    @Bean
-//    public PasswordEncoder getPasswordEncoder() {
-//        return NoOpPasswordEncoder.getInstance();
-////        return new BCryptPasswordEncoder();
-//    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -60,29 +51,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login", "/registration", "/login-error").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/admin**").hasRole("ADMIN")
                 .and()
                 .formLogin().loginPage("/login")
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/login-error")
                 .and()
+                .formLogin()
+                .successHandler(successUserHandler)
+                .permitAll()
+                .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login");
-
-
-
-
-//                .authorizeRequests()
-//                .antMatchers("/", "/index").permitAll()
-//                .antMatchers("/registration").not().fullyAuthenticated()
-//                .antMatchers("/users/**").hasRole("USER")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().successHandler(successUserHandler)
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll();
     }
 
 

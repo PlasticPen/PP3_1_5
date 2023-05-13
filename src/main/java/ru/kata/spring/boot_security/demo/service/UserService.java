@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.DAO.RoleRepository;
 import ru.kata.spring.boot_security.demo.DAO.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -15,6 +16,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,21 +39,14 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Autowired
-//    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-//        this.passwordEncoder = passwordEncoder;
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("BEFORE!!!");
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            System.out.println("ERROR!!!!!!!!!!!");
             throw new UsernameNotFoundException("User not found");
         }
-        System.out.println("AFTER!!!!!!!!!!!");
         return user;
     }
 
@@ -64,20 +59,35 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    //////ADD TRANSACTIONAL!!!
     public boolean saveUser(User user) {
+
+//        if (isThereAnyRoles()) {
+//            System.out.println("SAVEROLESCHECK!!!!!");
+//            em.createNativeQuery("INSERT INTO t_role(id, name) where VALUES (1, 'ROLE_USER'), (2, 'ROLE_ADMIN') ");
+//        }
+
         User userFromDB = userRepository.findByUsername(user.getUsername());
 
         if (userFromDB != null) {
             return false;
         }
 
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRoles(new HashSet<>());
+        System.out.println("BEFORE!!!!!!!!!!!!!!");
+        user.getRoles().add(new Role(1L, "ROLE_USER"));
+        System.out.println("AFTER!!!!!!!!!!!!!!!");
+        //user.getRoles().add(new Role(2L, "ROLE_ADMIN"));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        user.setPassword(user.getPassword());
 
         userRepository.save(user);
+        System.out.println("SAVE!!!!!!!!!!!!!!!");
         return true;
+    }
+
+    public boolean isThereAnyRoles() {
+        System.out.println("CHECK ROLES!!!!!");
+        List<Role> roles = em.createNativeQuery("SELECT * FROM t_role").getResultList();
+        return (roles.isEmpty());
     }
 
     public boolean deleteUser(Long userId) {
@@ -88,8 +98,12 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    public List<User> usergtList(Long idMin) {
-        return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
-                .setParameter("paramId", idMin).getResultList();
+    @Transactional
+    public void updateUser(Long userId, User updatedUser) {
+        User oldUser = userRepository.findById(userId).get();
+        updatedUser.setRoles(oldUser.getRoles());
+        updatedUser.setUsername(oldUser.getUsername());
+        updatedUser.setPassword(oldUser.getPassword());
+        userRepository.save(updatedUser);
     }
 }

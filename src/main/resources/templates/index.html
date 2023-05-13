@@ -4,7 +4,15 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>Welcome to Index PAGE!</h1>
-<a href="/logout">Logout</a>
+<h1>Welcome!</h1>
+
+<form th:action="@{/registration}" >
+    <input type="submit" value="Register" />
+</form>
+<form th:action="@{/login}">
+    <input type="submit" value="Login" />
+</form>
+
+<!--<a href="/logout">Logout</a>-->
 </body>
 </html>

@@ -23,8 +23,8 @@ public class User implements UserDetails {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "email")
-    private String email;
+//    @Column(name = "email")
+//    private String email;
 
     @Column(name = "username")
     private String username;
@@ -39,10 +39,10 @@ public class User implements UserDetails {
 
     }
 
-    public User(String name, String surname, String email) {
+    public User(String name, String surname) {
         this.name = name;
         this.surname = surname;
-        this.email = email;
+//        this.email = email;
     }
 
     public long getId() {
@@ -69,13 +69,13 @@ public class User implements UserDetails {
         this.surname = surname;
     }
 
-    public String getEmail() {
-        return email;
-    }
+//    public String getEmail() {
+//        return email;
+//    }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
 
 
     @Override
