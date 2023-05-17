@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
@@ -24,21 +23,18 @@ public class RegistrationController {
     @GetMapping
     public String initPage(@AuthenticationPrincipal User user) {
         if (user == null) {
+            return "redirect:/createAdmin";
+        }
+        else if (userService.findUserById(user.getId()).getId() == 0) {
             return "redirect:/login";
         }
         return "redirect:/user";
     }
 
-    @GetMapping("/login")
-    public String login() {
+    @GetMapping("/createAdmin")
+    public String createAdmin() {
         userService.createAdminUser();
-        return "login";
-    }
-
-    @RequestMapping("/login-error")
-    public String loginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping("/registration")

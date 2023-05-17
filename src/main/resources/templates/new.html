@@ -20,6 +20,12 @@
     <label for="surname">Enter surname:</label>
     <input type="text" th:charset="utf-8"  th:field="*{surname}" id="surname"/>
     <br/>
+    <input type="radio" id="role1" th:value="1" th:field="*{roleId}">
+    <label for="role1">USER</label>
+    <br/>
+    <input type="radio" id="role2" th:value="2" th:field="*{roleId}">
+    <label for="role2">ADMIN</label>
+    <br/>
     <input type="submit" value="Create new user"/>
 
 </form>

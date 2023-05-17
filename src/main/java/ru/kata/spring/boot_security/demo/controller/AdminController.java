@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,6 @@ public class AdminController {
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("/{id}")
-    public String show(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.findUserById(id));
-        return "show";
     }
 
     @GetMapping
@@ -41,9 +36,13 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    //If admin deletes itself, redirect to login page. Restarting server will create default admin user
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") long id) {
+    public String delete(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
         userService.deleteUser(id);
+        if (userService.findUserById(user.getId()).getId() == 0) {
+            return "redirect:/";
+        }
         return "redirect:/admin";
     }
 

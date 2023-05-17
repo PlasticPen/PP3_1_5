@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.DAO.RoleRepository;
 import ru.kata.spring.boot_security.demo.DAO.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -25,8 +24,6 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-
-    //    @Autowired
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -62,13 +59,18 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        if (user.getRoles() == null){
-            user.setRoles(new HashSet<>());
-        }
-        user.getRoles().add(new Role(1L, "ROLE_USER"));
+        assignRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
+    }
+
+    public void assignRoles(User user) {
+        user.setRoles(new HashSet<>());
+        user.getRoles().add(new Role(1L, "ROLE_USER"));
+        if (user.getRoleId() == 2) {
+            user.getRoles().add(new Role(2L, "ROLE_ADMIN"));
+        }
     }
 
     @Transactional
@@ -95,7 +97,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateUser(Long userId, User updatedUser) {
         User oldUser = userRepository.findById(userId).get();
-        updatedUser.setRoles(oldUser.getRoles());
+        assignRoles(updatedUser);
         updatedUser.setUsername(oldUser.getUsername());
         updatedUser.setPassword(oldUser.getPassword());
         userRepository.save(updatedUser);
@@ -104,13 +106,14 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void createAdminUser() {
         createRoles();
-        User admin = new User();
-        admin.setUsername("admin");
-        admin.setName("admin");
-        admin.setSurname("admin");
-        admin.setPassword("admin");
-        admin.setRoles(new HashSet<>());
-        admin.getRoles().add(new Role(2L, "ROLE_ADMIN"));
-        saveUser(admin);
+        if (allUsers().size() == 0) {
+            User admin = new User();
+            admin.setUsername("admin");
+            admin.setName("admin");
+            admin.setSurname("admin");
+            admin.setPassword("admin");
+            admin.setRoleId(2);
+            saveUser(admin);
+        }
     }
 }
