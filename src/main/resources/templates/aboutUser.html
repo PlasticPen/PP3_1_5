@@ -1,0 +1,20 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Age</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <td th:text="${currentUser.getId()}">id</td>
+    <td th:text="${currentUser.getName()}">name</td>
+    <td th:text="${currentUser.getSurname()}">surname</td>
+    <td th:text="${currentUser.getAge()}">age</td>
+    <td th:text="${currentUser.getUsername()}">username</td>
+    <td th:text="${currentUser.getRoles.size() == 2} ? 'ADMIN USER' : 'USER'" />
+    </tbody>
+</table>

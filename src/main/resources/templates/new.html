@@ -1,39 +1,32 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>New user</title>
-</head>
-<body>
-
-<form th:method="POST" th:action="@{/admin}" th:object="${user}">
-    <label for="username">username:</label>
-    <input type="text" th:charset="utf-8" th:field="*{username}" id="username"/>
-    <p style="color:red" th:if="${usernameError}" class="error">Wrong user or password</p>
-    <br/>
-    <label for="password">password:</label>
-    <input type="text" th:charset="utf-8"  th:field="*{password}" id="password"/>
-    <br/>
-    <label for="name">Enter name:</label>
-    <input type="text" th:charset="utf-8" th:field="*{name}" id="name"/>
-    <br/>
-    <label for="surname">Enter surname:</label>
-    <input type="text" th:charset="utf-8"  th:field="*{surname}" id="surname"/>
-    <br/>
-    <input type="radio" id="role1" th:value="1" th:field="*{roleId}">
-    <label for="role1">USER</label>
-    <br/>
-    <input type="radio" id="role2" th:value="2" th:field="*{roleId}">
-    <label for="role2">ADMIN</label>
-    <br/>
-    <input type="submit" value="Create new user"/>
-
+<form th:method="POST" th:action="@{/admin}" th:object="${newUser}" style ="text-align:center; font-weight:bold;">
+    <div class="mx-auto" style="width: 300px;">
+        <label for="firstname">First name</label>
+        <input type="text" class="form-control" id="firstname" placeholder="First name" th:field="*{name}">
+    </div>
+    <div class="mx-auto" style="width: 300px;">
+        <label for="lastname">Last name</label>
+        <input type="text" class="form-control" id="lastname" placeholder="Last name" th:field="*{surname}">
+    </div>
+    <div class="mx-auto" style="width: 300px;">
+        <label for="age">Age</label>
+        <input type="text" class="form-control" id="age" placeholder="Age" th:field="*{age}">
+    </div>
+    <div class="mx-auto" style="width: 300px;">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Email" th:field="*{username}">
+    </div>
+    <div class="mx-auto" style="width: 300px;">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Password" th:field="*{password}">
+    </div>
+    <div class="mx-auto" style="width: 300px;">
+        <label>Role</label>
+        <select class="custom-select" size="2" th:field="*{roleId}">
+            <option  th:value="2">ADMIN</option>
+            <option  th:value="1">USER</option>
+        </select>
+    </div>
+    <div class="mx-auto mt-3" style="width: 200px;">
+        <button type="submit" class="btn btn-success">Add new user</button>
+    </div>
 </form>
-<br/>
-<form th:action="@{/logout}">
-    <input type="submit" value="LOGOUT"/>
-</form>
-
-
-</body>
-</html>

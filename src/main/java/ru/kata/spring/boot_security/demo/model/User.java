@@ -23,6 +23,9 @@ public class User implements UserDetails {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "age")
+    private int age;
+
     @Column(name = "username")
     private String username;
 
@@ -68,6 +71,13 @@ public class User implements UserDetails {
         this.surname = surname;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

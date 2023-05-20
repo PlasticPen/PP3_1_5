@@ -19,10 +19,21 @@ public class AdminController {
         this.userService = userService;
     }
 
+//    @GetMapping
+//    public String showAllUsers(@AuthenticationPrincipal User user, Model model) {
+//        model.addAttribute("users", userService.allUsers());
+//        model.addAttribute("currentUser", user);
+//        model.addAttribute("newUser", new User());
+//        return "admin";
+//    }
+
     @GetMapping
-    public String showAllUsers(Model model) {
+    public String showAllUsers(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("users", userService.allUsers());
-        return "showAllUsers";
+        model.addAttribute("currentUser", user);
+        model.addAttribute("newUser", new User());
+//        return "showAllUsers";
+        return "adminPage";
     }
 
     @GetMapping("/new")
@@ -31,14 +42,16 @@ public class AdminController {
     }
 
     @PostMapping
-    public String create(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
+    public String create(@ModelAttribute("newUser") User newUser) {
+        userService.saveUser(newUser);
         return "redirect:/admin";
     }
 
-    //If admin deletes itself, redirect to login page. Restarting server will create default admin user
+    //If admin deletes itself and there are no users, redirect to login page. Restarting server will create default admin user
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
+        System.out.println("ID = " + id);
+        System.out.println(user.getId());
         userService.deleteUser(id);
         if (userService.findUserById(user.getId()).getId() == 0) {
             return "redirect:/";
@@ -52,8 +65,8 @@ public class AdminController {
         return "edit";
     }
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("oldUser") User user, @PathVariable("id") long id) {
-        userService.updateUser(id, user);
+    public String update(@ModelAttribute("newUser") User updatedUser, @PathVariable("id") long id) {
+        userService.updateUser(id, updatedUser);
         return "redirect:/admin";
     }
 }

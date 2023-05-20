@@ -14,8 +14,9 @@ public class UsersController {
 
     @GetMapping
     public String userHomePage(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("user", user);
-        return "homePage";
+        model.addAttribute("currentUser", user);
+//        return "homePage";
+        return "userPage";
     }
 
 }

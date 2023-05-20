@@ -68,6 +68,7 @@ public class UserService implements UserDetailsService {
     public void assignRoles(User user) {
         user.setRoles(new HashSet<>());
         user.getRoles().add(new Role(1L, "ROLE_USER"));
+        System.out.println(user.getRoleId());
         if (user.getRoleId() == 2) {
             user.getRoles().add(new Role(2L, "ROLE_ADMIN"));
         }
@@ -98,8 +99,9 @@ public class UserService implements UserDetailsService {
     public void updateUser(Long userId, User updatedUser) {
         User oldUser = userRepository.findById(userId).get();
         assignRoles(updatedUser);
-        updatedUser.setUsername(oldUser.getUsername());
-        updatedUser.setPassword(oldUser.getPassword());
+        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+//        updatedUser.setUsername(oldUser.getUsername());
+//        updatedUser.setPassword(oldUser.getPassword());
         userRepository.save(updatedUser);
     }
 
@@ -111,6 +113,7 @@ public class UserService implements UserDetailsService {
             admin.setUsername("admin");
             admin.setName("admin");
             admin.setSurname("admin");
+            admin.setAge(0);
             admin.setPassword("admin");
             admin.setRoleId(2);
             saveUser(admin);
