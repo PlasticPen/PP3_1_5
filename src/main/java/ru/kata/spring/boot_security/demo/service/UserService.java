@@ -99,9 +99,11 @@ public class UserService implements UserDetailsService {
     public void updateUser(Long userId, User updatedUser) {
         User oldUser = userRepository.findById(userId).get();
         assignRoles(updatedUser);
-        updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-//        updatedUser.setUsername(oldUser.getUsername());
-//        updatedUser.setPassword(oldUser.getPassword());
+        if (updatedUser.getPassword().isEmpty()) {
+            updatedUser.setPassword(oldUser.getPassword());
+        } else {
+            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
         userRepository.save(updatedUser);
     }
 
@@ -113,7 +115,7 @@ public class UserService implements UserDetailsService {
             admin.setUsername("admin");
             admin.setName("admin");
             admin.setSurname("admin");
-            admin.setAge(0);
+            admin.setAge(999);
             admin.setPassword("admin");
             admin.setRoleId(2);
             saveUser(admin);

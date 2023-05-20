@@ -59,11 +59,11 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") long id) {
-        model.addAttribute("oldUser", userService.findUserById(id));
-        return "edit";
-    }
+//    @GetMapping("/{id}/edit")
+//    public String edit(Model model, @PathVariable("id") long id) {
+//        model.addAttribute("oldUser", userService.findUserById(id));
+//        return "edit";
+//    }
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("newUser") User updatedUser, @PathVariable("id") long id) {
         userService.updateUser(id, updatedUser);
