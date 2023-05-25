@@ -20,7 +20,7 @@ public class RegistrationController {
     //After starting server if there are no users in DB, creates admin user with credentials: "admin" | "admin"
     @GetMapping
     public String initPage(@AuthenticationPrincipal User user) {
-        if (user == null) {
+        if (user == null || userService.findUserById(user.getId()).getId() == 0) {
             return "redirect:/createAdmin";
         } else if (user.getRoles().size() == 2) {
             return "redirect:/admin";

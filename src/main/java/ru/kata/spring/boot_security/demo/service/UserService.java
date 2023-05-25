@@ -110,7 +110,6 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void createAdminUser() {
         createRoles();
-        if (allUsers().size() == 0) {
             User admin = new User();
             admin.setUsername("admin");
             admin.setName("admin");
@@ -119,6 +118,5 @@ public class UserService implements UserDetailsService {
             admin.setPassword("admin");
             admin.setRoleId(2);
             saveUser(admin);
-        }
     }
 }

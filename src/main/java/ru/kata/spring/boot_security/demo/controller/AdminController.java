@@ -19,20 +19,11 @@ public class AdminController {
         this.userService = userService;
     }
 
-//    @GetMapping
-//    public String showAllUsers(@AuthenticationPrincipal User user, Model model) {
-//        model.addAttribute("users", userService.allUsers());
-//        model.addAttribute("currentUser", user);
-//        model.addAttribute("newUser", new User());
-//        return "admin";
-//    }
-
     @GetMapping
     public String showAllUsers(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("users", userService.allUsers());
         model.addAttribute("currentUser", user);
         model.addAttribute("newUser", new User());
-//        return "showAllUsers";
         return "adminPage";
     }
 
@@ -47,23 +38,16 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    //If admin deletes itself and there are no users, redirect to login page. Restarting server will create default admin user
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") long id, @AuthenticationPrincipal User user) {
-        System.out.println("ID = " + id);
-        System.out.println(user.getId());
         userService.deleteUser(id);
+        //If you deleted the same user you're signed in
         if (userService.findUserById(user.getId()).getId() == 0) {
             return "redirect:/";
         }
         return "redirect:/admin";
     }
 
-//    @GetMapping("/{id}/edit")
-//    public String edit(Model model, @PathVariable("id") long id) {
-//        model.addAttribute("oldUser", userService.findUserById(id));
-//        return "edit";
-//    }
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("newUser") User updatedUser, @PathVariable("id") long id) {
         userService.updateUser(id, updatedUser);
