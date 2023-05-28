@@ -1,4 +1,36 @@
-<table class="table table-striped">
+<script>
+    $(document).ready(function() {
+        $.getJSON('http://localhost:8080/api/users', function(jd) {
+            $("#editUserInclude").load('pages/editUser');
+            $("#deleteUserInclude").load('pages/deleteUser');
+
+            $.each(jd, function(index, value) {
+                let role;
+                if (value.roleId == 2) {
+                    role = "ADMIN USER";
+                }
+                else {
+                    role = "USER";
+                }
+                $('#allUsersTableTbodyId').append("<tr>\
+                <td>"+value.id+"</td>\
+                <td>"+value.name+"</td>\
+                <td>"+value.surname+"</td>\
+                <td>"+value.age+"</td>\
+                <td>"+value.username+"</td>\
+                <td>"+role+"</td>\
+                <td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#editModal' data-id='"+value.id+"'>Edit</button></td>\
+                <td><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#deleteModal' data-id='"+value.id+"'>Delete</button></td>\
+                </tr>");
+            });
+
+        });
+        });
+</script>
+
+<p></p>
+
+<table id = "allUsersTable" class="table table-striped">
     <thead>
     <tr>
         <th scope="col">ID</th>
@@ -11,21 +43,15 @@
         <th scope="col">Delete</th>
     </tr>
     </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-
-        <td th:text="${user.getId()}" name="usId" id="usId">id</td>
-        <td th:text="${user.getName()}">name</td>
-        <td th:text="${user.getSurname()}">surname</td>
-        <td th:text="${user.getAge()}">age</td>
-        <td th:text="${user.getUsername()}">username</td>
-        <td th:text="${user.getRoles.size() == 2} ? 'ADMIN USER' : 'USER'" />
-        <td>
-            <div th:replace="editUser.html">...</div>
-        </td>
-        <td>
-            <div th:replace="deleteUser.html">...</div>
-        </td>
-    </tr>
+    <tbody id="allUsersTableTbodyId">
+<!--    <td id = "kek">-->
+<!--        <div th:replace="editUser.html">...</div>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--        <div th:replace="deleteUser.html">...</div>-->
+<!--    </td>-->
     </tbody>
 </table>
+
+<div id="editUserInclude"></div>
+<div id="deleteUserInclude"></div>

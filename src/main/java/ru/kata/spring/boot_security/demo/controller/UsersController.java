@@ -14,6 +14,7 @@ public class UsersController {
     public String userHomePage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("currentUser", user);
         return "userPage";
+//        return "test";
     }
 
 }

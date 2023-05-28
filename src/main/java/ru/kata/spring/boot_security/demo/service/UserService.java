@@ -59,19 +59,19 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        assignRoles(user);
+//        assignRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
-    public void assignRoles(User user) {
+    public User assignRoles(User user, int roleId) {
         user.setRoles(new HashSet<>());
         user.getRoles().add(new Role(1L, "ROLE_USER"));
-        System.out.println(user.getRoleId());
-        if (user.getRoleId() == 2) {
+        if (roleId == 2) {
             user.getRoles().add(new Role(2L, "ROLE_ADMIN"));
         }
+        return user;
     }
 
     @Transactional
@@ -98,7 +98,9 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void updateUser(Long userId, User updatedUser) {
         User oldUser = userRepository.findById(userId).get();
-        assignRoles(updatedUser);
+//        assignRoles(updatedUser);
+        System.out.println("///////////////////////////////////////////");
+        System.out.println(updatedUser.getId());
         if (updatedUser.getPassword().isEmpty()) {
             updatedUser.setPassword(oldUser.getPassword());
         } else {
@@ -116,7 +118,7 @@ public class UserService implements UserDetailsService {
             admin.setSurname("admin");
             admin.setAge(999);
             admin.setPassword("admin");
-            admin.setRoleId(2);
+//            admin.setRoleId(2);
             saveUser(admin);
     }
 }

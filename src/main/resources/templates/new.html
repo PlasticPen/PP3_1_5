@@ -1,32 +1,63 @@
-<form th:method="POST" th:action="@{/admin}" th:object="${newUser}" style ="text-align:center; font-weight:bold;">
+<!--<form th:method="POST" th:action="@{/admin}" th:object="${newUser}" style ="text-align:center; font-weight:bold;">-->
+<script>
+    $(document).ready(function(){
+        $("#newUserButton").click(function(){
+            var inputFirstname = $("#firstname").val();
+            var inputLastname = $("#lastname").val();
+            var inputAge = $("#age").val();
+            var inputUsername = $("#email").val();
+            var inputPassword = $("#password").val();
+            var inputRoleId = $("#roleId").val();
+            var arr = { "name":inputFirstname,
+                "surname":inputLastname,
+                "age":inputAge,
+                "username":inputUsername,
+                "password":inputPassword,
+                "roleId":inputRoleId,
+            };
+            $.ajax('http://localhost:8080/api/users',{
+                'data': JSON.stringify(arr),
+                'type': 'POST',
+                'processData': false,
+                'contentType': 'application/json'
+            });
+            $(location).attr('href',"/admin");
+        });
+    });
+</script>
+
+
+
     <div class="mx-auto" style="width: 300px;">
         <label for="firstname">First name</label>
-        <input type="text" class="form-control" id="firstname" placeholder="First name" th:field="*{name}">
+        <input type="text" class="form-control" id="firstname" placeholder="First name">
     </div>
     <div class="mx-auto" style="width: 300px;">
         <label for="lastname">Last name</label>
-        <input type="text" class="form-control" id="lastname" placeholder="Last name" th:field="*{surname}">
+        <input type="text" class="form-control" id="lastname" placeholder="Last name">
     </div>
     <div class="mx-auto" style="width: 300px;">
         <label for="age">Age</label>
-        <input type="text" class="form-control" id="age" placeholder="Age" th:field="*{age}">
+        <input type="text" class="form-control" id="age" placeholder="Age">
     </div>
     <div class="mx-auto" style="width: 300px;">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" placeholder="Email" th:field="*{username}">
+        <input type="email" class="form-control" id="email" placeholder="Email">
     </div>
     <div class="mx-auto" style="width: 300px;">
         <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password" th:field="*{password}">
+        <input type="password" class="form-control" id="password" placeholder="Password">
     </div>
     <div class="mx-auto" style="width: 300px;">
         <label>Role</label>
-        <select class="custom-select" size="2" th:field="*{roleId}">
-            <option  th:value="2">ADMIN</option>
-            <option  th:value="1">USER</option>
+        <select class="custom-select" size="2"  id="roleId">
+            <option  value="2">ADMIN</option>
+            <option  value="1">USER</option>
         </select>
     </div>
     <div class="mx-auto mt-3" style="width: 200px;">
-        <button type="submit" class="btn btn-success">Add new user</button>
+        <button id = "newUserButton" type="submit" class="btn btn-success">Add new user</button>
     </div>
-</form>
+
+<p></p>
+<!--</form>-->

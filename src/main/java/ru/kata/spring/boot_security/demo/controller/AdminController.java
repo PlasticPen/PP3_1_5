@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -25,6 +26,7 @@ public class AdminController {
         model.addAttribute("currentUser", user);
         model.addAttribute("newUser", new User());
         return "adminPage";
+//        return "test";
     }
 
     @GetMapping("/new")

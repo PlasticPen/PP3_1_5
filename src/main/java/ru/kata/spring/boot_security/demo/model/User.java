@@ -4,6 +4,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -18,22 +22,29 @@ public class User implements UserDetails {
     private long id;
 
     @Column(name = "name")
+    @NotEmpty(message = "Empty name!")
+    @Size(min = 2, max = 30, message = "Name is too short or too long")
     private String name;
 
+    @NotEmpty(message = "Empty Surname!")
+    @Size(min = 2, max = 30, message = "Surbame is too short or too long")
     @Column(name = "surname")
     private String surname;
 
     @Column(name = "age")
+    @Min(value = 0, message = "Age cannot be < 0")
     private int age;
 
     @Column(name = "username")
+    @Email
+    @NotEmpty(message = "cannot be empty")
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Transient
-    private int roleId;
+//    @Transient
+//    private int roleId;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
@@ -130,11 +141,11 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
+//    public int getRoleId() {
+//        return roleId;
+//    }
+//
+//    public void setRoleId(int roleId) {
+//        this.roleId = roleId;
+//    }
 }
