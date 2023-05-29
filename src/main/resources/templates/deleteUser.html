@@ -14,6 +14,9 @@
                     'type': 'DELETE',
                 });
             })
+            $("#deleteModal").on('hidden.bs.modal', function (){
+                setTimeout(myHandler, 500)
+            })
         })
     })
 </script>
@@ -62,7 +65,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-danger" id="deleteButton">Delete</button>
+                <button type="submit" class="btn btn-danger" data-dismiss="modal" id="deleteButton">Delete</button>
             </div>
         </div>
     </div>

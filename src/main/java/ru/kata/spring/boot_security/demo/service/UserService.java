@@ -113,12 +113,12 @@ public class UserService implements UserDetailsService {
     public void createAdminUser() {
         createRoles();
             User admin = new User();
-            admin.setUsername("admin");
+            admin.setUsername("admin@mail.ru");
             admin.setName("admin");
             admin.setSurname("admin");
             admin.setAge(999);
             admin.setPassword("admin");
-//            admin.setRoleId(2);
+            assignRoles(admin, 2);
             saveUser(admin);
     }
 }

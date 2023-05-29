@@ -1,4 +1,3 @@
-<!--<form th:method="POST" th:action="@{/admin}" th:object="${newUser}" style ="text-align:center; font-weight:bold;">-->
 <script>
     $(document).ready(function(){
         $("#newUserButton").click(function(){
@@ -21,7 +20,8 @@
                 'processData': false,
                 'contentType': 'application/json'
             });
-            $(location).attr('href',"/admin");
+            setTimeout(myHandler, 500)
+            $('.nav-tabs a[href="#users-table"]').tab('show')
         });
     });
 </script>
@@ -60,4 +60,3 @@
     </div>
 
 <p></p>
-<!--</form>-->
