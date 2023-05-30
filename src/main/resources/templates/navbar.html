@@ -1,43 +1,29 @@
-<script>
-    $(document).ready(function() {
-        $.getJSON('http://localhost:8080/api/users/signedUser', function(jd) {
-            $('#navbar1').html(jd.name);
-            if (jd.roleId == 2) {
-                $('#navbar2').html("ADMIN USER");
-                // $('#aboutUserTableRole').html("ADMIN USER");
-            }
-            else {
-                $('#admin-pills-tab').hide();
-                $('#navbar2').html('<p>' + "USER" + '</p>');
-                // $('#aboutUserTableRole').html("USER");
-            }
-            // $('#aboutUserTableId').html(jd.id);
-            // $('#aboutUserTableName').html(jd.name);
-            // $('#aboutUserTableSurname').html(jd.surname);
-            // $('#aboutUserTableAge').html(jd.age);
-            // $('#aboutUserTableUsername').html(jd.username);
-        });
-    });
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/navbar.js"></script>
+</head>
+<body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item mr-1">
-                    <span id = "navbar1" style="color:white;font-weight:bold;" class="navbar-text"></span>
-                </li>
-                <li class="nav-item mr-1">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item mr-1">
+                <span id="navbar1" style="color:white;font-weight:bold;" class="navbar-text"></span>
+            </li>
+            <li class="nav-item mr-1">
                     <span style="color:white" class="navbar-text">
                         with roles:
                     </span>
-                </li>
-                <li class="nav-item mr-1">
-                    <span id = "navbar2" style="color:white" class="navbar-text"></span>
-                </li>
-            </ul>
-            <a style="color:gray" class="nav-link" href="/logout">Logout</a>
-        </div>
+            </li>
+            <li class="nav-item mr-1">
+                <span id="navbar2" style="color:white" class="navbar-text"></span>
+            </li>
+        </ul>
+        <a style="color:gray" class="nav-link" href="/logout">Logout</a>
+    </div>
+</nav>
 
+</body>
+</html>
 
-    </nav>

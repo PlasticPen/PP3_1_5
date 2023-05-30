@@ -1,33 +1,9 @@
-<script>
-    $(document).on('show.bs.modal', '#editModal', function (event) {
-        $.getJSON('http://localhost:8080/api/users/' + $(event.relatedTarget).data('id'), function(jd) {
-            $("#EditId").attr('placeholder', jd.id);
-            $("#EditFirstname").attr('value', jd.name);
-            $("#EditLastname").attr('value', jd.surname);
-            $("#EditAge").attr('value', jd.age);
-            $("#EditEmail").attr('value', jd.username);
-            $("#EditPassword").attr('field', jd.password);
-            $("#editButton").click(function(){
-                var arr = { "name":$("#EditFirstname").val(),
-                    "surname":$("#EditLastname").val(),
-                    "age":$("#EditAge").val(),
-                    "username":$("#EditEmail").val(),
-                    "password":$("#EditPassword").val(),
-                    "roleId":$("#EditRoleId").val(),
-                };
-                $.ajax('http://localhost:8080/api/users/' + jd.id,{
-                    'data': JSON.stringify(arr),
-                    'type': 'PATCH',
-                    'processData': false,
-                    'contentType': 'application/merge-patch+json',
-                });
-            })
-        })
-        $("#editModal").on('hidden.bs.modal', function (){
-            setTimeout(myHandler, 500)
-        })
-    })
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/editUser.js"></script>
+</head>
+<body>
 
 <!-- Modal-->
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="EditModalLabel" aria-hidden="true"
@@ -59,17 +35,17 @@
                 </div>
                 <div class="mx-auto" style="width: 300px;">
                     <label for="EditEmail">Email</label>
-                    <input type="email" class="form-control" id="EditEmail" required>
+                    <input type="email" class="form-control" id="EditEmail" autocomplete="new-password" required>
                 </div>
                 <div class="mx-auto" style="width: 300px;">
                     <label for="EditPassword">Password</label>
-                    <input type="password" class="form-control" id="EditPassword">
+                    <input type="password" class="form-control" id="EditPassword" autocomplete="new-password">
                 </div>
                 <div class="mx-auto" style="width: 300px;">
                     <label for="EditRoleId">Role</label>
                     <select class="custom-select" size="2" id="EditRoleId">
-                        <option th:value="2">ADMIN</option>
-                        <option th:value="1">USER</option>
+                        <option value="2">ADMIN</option>
+                        <option value="1">USER</option>
                     </select>
                 </div>
             </div>
@@ -80,4 +56,9 @@
         </div>
     </div>
 </div>
+
+</body>
+</html>
+
+
 

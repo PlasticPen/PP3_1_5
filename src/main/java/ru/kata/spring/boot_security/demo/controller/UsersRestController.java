@@ -5,16 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.dto.UserDTO;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,18 +44,7 @@ public class UsersRestController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO,
-                                             BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            StringBuilder msg = new StringBuilder();
-//
-//            List<FieldError> errors = bindingResult.getFieldErrors();
-//            for (FieldError error : errors) {
-//                msg.append(error.getField()).append(" - ").append(error.getDefaultMessage()).append(";");
-//            }
-//
-//            throw new RuntimeException(msg.toString());
-//        }
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO) {
 
         userService.saveUser(convertToUser(userDTO));
 

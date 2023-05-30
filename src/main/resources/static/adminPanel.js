@@ -1,4 +1,4 @@
-function myHandler(e) {
+function allUsersHandler(e) {
     $("#usersTable").empty().load("pages/allUsers")
 }
 
@@ -7,7 +7,7 @@ function newHandler() {
 }
 
 $(document).ready(function(){
-    myHandler();
+    allUsersHandler();
     newHandler();
 });
 

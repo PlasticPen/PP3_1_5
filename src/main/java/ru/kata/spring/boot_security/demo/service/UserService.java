@@ -53,15 +53,36 @@ public class UserService implements UserDetailsService {
     @Transactional
     public boolean saveUser(User user) {
 
+        //Check if new user username is not already used
         User userFromDB = userRepository.findByUsername(user.getUsername());
-
         if (userFromDB != null) {
             return false;
         }
 
-//        assignRoles(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        return true;
+    }
+
+    @Transactional
+    public boolean updateUser(Long userId, User updatedUser) {
+
+        User userFromDB = userRepository.findByUsername(updatedUser.getUsername());
+        User oldUser = userRepository.findById(userId).get();
+
+        //If username is changed, check if there is no same username in DB
+        if (!(oldUser.getUsername().equals(updatedUser.getUsername()))) {
+            if (userFromDB != null) {
+                return false;
+            }
+        }
+        //if password field is empty, just copy password from db
+        if (updatedUser.getPassword().isEmpty()) {
+            updatedUser.setPassword(oldUser.getPassword());
+        } else {
+            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+        userRepository.save(updatedUser);
         return true;
     }
 
@@ -95,30 +116,17 @@ public class UserService implements UserDetailsService {
         return false;
     }
 
-    @Transactional
-    public void updateUser(Long userId, User updatedUser) {
-        User oldUser = userRepository.findById(userId).get();
-//        assignRoles(updatedUser);
-        System.out.println("///////////////////////////////////////////");
-        System.out.println(updatedUser.getId());
-        if (updatedUser.getPassword().isEmpty()) {
-            updatedUser.setPassword(oldUser.getPassword());
-        } else {
-            updatedUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-        }
-        userRepository.save(updatedUser);
-    }
 
     @Transactional
     public void createAdminUser() {
         createRoles();
-            User admin = new User();
-            admin.setUsername("admin@mail.ru");
-            admin.setName("admin");
-            admin.setSurname("admin");
-            admin.setAge(999);
-            admin.setPassword("admin");
-            assignRoles(admin, 2);
-            saveUser(admin);
+        User admin = new User();
+        admin.setUsername("admin@mail.ru");
+        admin.setName("admin");
+        admin.setSurname("admin");
+        admin.setAge(999);
+        admin.setPassword("admin");
+        assignRoles(admin, 2);
+        saveUser(admin);
     }
 }

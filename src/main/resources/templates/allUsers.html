@@ -1,35 +1,11 @@
-<script>
-    $(document).ready(function() {
-        $("#editUserInclude").load('pages/editUser');
-        $("#deleteUserInclude").load('pages/deleteUser');
-        $.getJSON('http://localhost:8080/api/users', function(jd) {
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/allUsers.js"></script>
+</head>
+<body>
 
-            $('#allUsersTableTbodyId').empty();
-            $.each(jd, function(index, value) {
-                let role;
-                if (value.roleId == 2) {
-                    role = "ADMIN USER";
-                }
-                else {
-                    role = "USER";
-                }
-                $('#allUsersTableTbodyId').append("<tr>\
-                <td>"+value.id+"</td>\
-                <td>"+value.name+"</td>\
-                <td>"+value.surname+"</td>\
-                <td>"+value.age+"</td>\
-                <td>"+value.username+"</td>\
-                <td>"+role+"</td>\
-                <td><button type='button' class='btn btn-primary' data-toggle='modal' data-target='#editModal' data-id='"+value.id+"'>Edit</button></td>\
-                <td><button type='button' class='btn btn-danger' data-toggle='modal' data-target='#deleteModal' data-id='"+value.id+"'>Delete</button></td>\
-                </tr>");
-            });
-
-        });
-        });
-</script>
-
-<table id = "allUsersTable" class="table table-striped">
+<table id="allUsersTable" class="table table-striped">
     <thead>
     <tr>
         <th scope="col">ID</th>
@@ -48,3 +24,7 @@
 
 <div id="editUserInclude"></div>
 <div id="deleteUserInclude"></div>
+
+</body>
+</html>
+

@@ -1,33 +1,11 @@
-<script>
-    $(document).ready(function(){
-        $("#newUserButton").click(function(){
-            var inputFirstname = $("#firstname").val();
-            var inputLastname = $("#lastname").val();
-            var inputAge = $("#age").val();
-            var inputUsername = $("#email").val();
-            var inputPassword = $("#password").val();
-            var inputRoleId = $("#roleId").val();
-            var arr = { "name":inputFirstname,
-                "surname":inputLastname,
-                "age":inputAge,
-                "username":inputUsername,
-                "password":inputPassword,
-                "roleId":inputRoleId,
-            };
-            $.ajax('http://localhost:8080/api/users',{
-                'data': JSON.stringify(arr),
-                'type': 'POST',
-                'processData': false,
-                'contentType': 'application/json'
-            });
-            setTimeout(myHandler, 500)
-            $('.nav-tabs a[href="#users-table"]').tab('show')
-        });
-    });
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/new.js"></script>
+</head>
+<body>
 
-
-
+<div style="text-align:center; font-weight:bold">
     <div class="mx-auto" style="width: 300px;">
         <label for="firstname">First name</label>
         <input type="text" class="form-control" id="firstname" placeholder="First name">
@@ -50,13 +28,21 @@
     </div>
     <div class="mx-auto" style="width: 300px;">
         <label>Role</label>
-        <select class="custom-select" size="2"  id="roleId">
-            <option  value="2">ADMIN</option>
-            <option  value="1">USER</option>
+        <select class="custom-select" size="2" id="roleId">
+            <option value="2">ADMIN</option>
+            <option value="1">USER</option>
         </select>
     </div>
     <div class="mx-auto mt-3" style="width: 200px;">
-        <button id = "newUserButton" type="submit" class="btn btn-success">Add new user</button>
+        <button id="newUserButton" type="submit" class="btn btn-success">Add new user</button>
     </div>
+</div>
 
-<p></p>
+</body>
+</html>
+
+
+
+
+
+

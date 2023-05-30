@@ -17,7 +17,7 @@ public class RegistrationController {
         this.userService = userService;
     }
 
-    //After starting server if there are no users in DB, creates admin user with credentials: "admin" | "admin"
+    //After starting server if there are no users in DB, creates admin user with credentials: "admin@mail.ru" | "admin"
     @GetMapping
     public String initPage(@AuthenticationPrincipal User user) {
         if (user == null || userService.findUserById(user.getId()).getId() == 0) {

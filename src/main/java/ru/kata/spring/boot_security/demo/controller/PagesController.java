@@ -40,12 +40,6 @@ public class PagesController {
     }
 
     @GetMapping
-    @RequestMapping("/test")
-    public String test() {
-        return "test";
-    }
-
-    @GetMapping
     @RequestMapping("/new")
     public String newUser() {
         return "new";
